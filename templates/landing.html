@@ -22,6 +22,7 @@
             <div class="hero-actions">
                 <a href="{{ url_for('register') }}" class="btn-hero-primary">Start tracking free</a>
                 <a href="{{ url_for('login') }}" class="btn-hero-secondary">Sign in</a>
+                <button type="button" class="btn-hero-ghost" id="how-it-works-btn">See how it works</button>
             </div>
         </div>
         <div class="hero-visual">
@@ -97,4 +98,55 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+<div class="modal-overlay" id="video-modal">
+    <div class="modal-content">
+        <button class="modal-close" id="modal-close-btn" aria-label="Close modal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="modal-video">
+            <iframe id="modal-youtube" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+<script>
+(function() {
+    const modal = document.getElementById('video-modal');
+    const openBtn = document.getElementById('how-it-works-btn');
+    const closeBtn = document.getElementById('modal-close-btn');
+    const iframe = document.getElementById('modal-youtube');
+    const YOUTUBE_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';
+
+    openBtn.addEventListener('click', function() {
+        iframe.src = YOUTUBE_URL;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+
+    function closeModal() {
+        iframe.src = '';
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+})();
+</script>
 {% endblock %}
